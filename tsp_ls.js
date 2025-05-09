@@ -3,7 +3,7 @@ function tsp_ls(distance_matrix)
     // If theres less than 2 cities, the shortest length is 0.
     if(distance_matrix.length < 2)
     {
-        return 0;
+        return [0, [0]];
     }
 
     var msToSearch = 50;
@@ -32,7 +32,7 @@ function tsp_ls(distance_matrix)
         indices = randomizeIndices(distance_matrix.length, indices);
     }
 
-    return shortestLength;
+    return [shortestLength, route];
 }
 
 // Provides the length of a proposed route, using a distance matrix.
@@ -67,6 +67,12 @@ function reverseRouteSegment(route, indices)
 // Provides new indices to be used when reversing a route segment.
 function randomizeIndices(numCities, previousIndices)
 {
+    // If there's only two cities, this is the only possible indicies.
+    if(numCities <= 2)
+    {
+        return [0, 1];
+    }
+
     var newFirst;
     var newSecond;
 
@@ -85,3 +91,5 @@ function randomizeIndices(numCities, previousIndices)
     // Return the indices that will be swapped next.
     return [newFirst, newSecond];
 }
+
+module.exports = { tsp_ls };

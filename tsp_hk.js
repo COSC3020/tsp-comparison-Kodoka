@@ -6,11 +6,13 @@ function tsp_hk(distance_matrix)
     var minimumDistance = Infinity;
     // Memoizatoin cache.
     var memoStorage = {};
+    var bestPath = [];
 
     // If 1 city, no need to travel at all.
     if(numCities == 1)
     {
-        return 0;
+        // Return as [length, path]
+        return [0, [0]];
     }
 
     // Fill our array with the index of each city.
@@ -29,18 +31,19 @@ function tsp_hk(distance_matrix)
         unvisited.splice(originIndex, 1);
 
         // Start our recursive call to find the minimumDistance from
-        // current origin city.
-        var traveledDistance = tspRecursion(originCity, unvisited, memoStorage);
+        // current origin city. Returns [distance, path]
+        var result = tspRecursion(originCity, unvisited, memoStorage);
         
         // If the current origin city produces a lower distance than
         // our current minimumDistance, it replaces it.
-        if(traveledDistance < minimumDistance)
+        if(result[0] < minimumDistance)
         {
-            minimumDistance = traveledDistance;
+            minimumDistance = result[0];
+            bestPath = [originCity].concat(result[1]);
         }
     }
     
-    return minimumDistance;
+    return [minimumDistance, bestPath];
 
     function tspRecursion(currentCity, unvisitedCities, memo)
     {
@@ -53,7 +56,7 @@ function tsp_hk(distance_matrix)
         // If we've already solved this, return our cached result.
         if(memo[key] != undefined)
         {
-            return memo[key];
+            return [memo[key][0], memo[key][1].slice()];
         }
 
         // Base case, when 1 city remains, that's the only option,
@@ -61,13 +64,15 @@ function tsp_hk(distance_matrix)
         if(unvisitedCities.length == 1)
         {
             // Distance from current city to last.
-            memo[key] = distance_matrix[currentCity][unvisitedCities[0]];
-            return memo[key];
+            memo[key] = [distance_matrix[currentCity][unvisitedCities[0]], [unvisitedCities[0]]];
+            return [memo[key][0], memo[key][1].slice()];
         }
 
         // Try every remaining unvisited city as the next potential city
         // on our route.
         var bestDistance = Infinity;
+        var bestPath = [];
+
         for(var nextCandidate = 0; nextCandidate < unvisitedCities.length; nextCandidate++)
         {
             var nextCity = unvisitedCities[nextCandidate];
@@ -79,19 +84,23 @@ function tsp_hk(distance_matrix)
 
             // nextDistance is the distance from the current city to the
             // next, plus next through the new remaining unvisited.
-            var nextDistance = distance_matrix[currentCity][nextCity] + tspRecursion(nextCity, newUnvisited, memo);
+            var subResult = tspRecursion(nextCity, newUnvisited, memo);
+            var totalDistance = distance_matrix[currentCity][nextCity] + subResult[0];
 
             // If the nextDistance provides a better optoin than our
             // current bestDistance, update bestDistance to our shortest
             // option.
-            if(nextDistance < bestDistance)
+            if(totalDistance < bestDistance)
             {
-                bestDistance = nextDistance;
+                bestDistance = totalDistance;
+                bestPath = [nextCity].concat(subResult[1]);
             }
         }
 
         // Cache and return best distance for this subpath.
-        memo[key] = bestDistance;
-        return bestDistance;
+        memo[key] = [bestDistance, bestPath];
+        return [memo[key][0], memo[key][1].slice()];
     }
 }
+
+module.exports = { tsp_hk };
