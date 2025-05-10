@@ -5,7 +5,7 @@ const { performance } = require('perf_hooks');
 
 function runTests()
 {
-    // Max runtime is 1 hour, in milliseconds.
+    // Minimum max runtime is 1 hour, in milliseconds.
     var maxRunTime = 3600000;
     var size = 2;
     var previousHKTime = 0;
@@ -18,13 +18,13 @@ function runTests()
 
         // Use tsp_hk on our distance matrix, and time the process.
         var hkStart = performance.now();
-        var hkResults = tsp_hk(distanceMatrix);
+        var hkResult = tsp_hk(distanceMatrix);
         var hkEnd = performance.now();
         previousHKTime = hkEnd - hkStart;
 
         // Use tsp_ls on our distance matrix, and time the process.
         var lsStart = performance.now();
-        var lsResults = tsp_ls(distanceMatrix);
+        var lsResult = tsp_ls(distanceMatrix);
         var lsEnd = performance.now();
         previousLSTime = lsEnd - lsStart;
 
@@ -33,11 +33,9 @@ function runTests()
         entry += "Size: " + size + "\n";
         entry += "Matrix:\n" + printMatrix(distanceMatrix);
         entry += "HK Time (MS): " + previousHKTime + "\n";
-        entry += "HK Distance: " + hkResults[0] + "\n";
-        entry += "HK Path: " + JSON.stringify(hkResults[1]) + "\n";
+        entry += "HK Distance: " + hkResult + "\n";
         entry += "LS Time (MS): " + previousLSTime + "\n";
-        entry += "LS Distance: " + lsResults[0] + "\n";
-        entry += "LS Path: " + JSON.stringify(lsResults[1]) + "\n\n"; 
+        entry += "LS Distance: " + lsResult + "\n\n";
         
         // Log testing information.
         fs.appendFileSync("results.txt", entry);
