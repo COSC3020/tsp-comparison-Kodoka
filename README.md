@@ -86,9 +86,11 @@ We then have the path lengths, below. LS keeps up with HK for a little bit,
 producing graphs with the same length; however, it quickly becomes apparent
 that aside from a few lucky hits, such as for the matrix size 16, HK will
 produce paths that are shorter than LS, and almost assuredly, as time goes
-on, the ineffeciency of randomly altering a portion of path will become more
-pronounced; however, when keeping the time it takes HK to generate those
-perfect paths, it may not be worth it pragmatically.
+on, the ineffeciency of randomly altering a portion of path, which is why
+we always see LS performating worse or equivalently to HK when path length
+is the metric, will become more pronounced; however, when keeping the time
+it takes HK to generate those perfect paths, it may not be worth it
+pragmatically.
 ![Graph Distance](https://github.com/user-attachments/assets/3ff27b82-facf-4a63-9b9c-3ea60b762604)
 
 ## Sources
