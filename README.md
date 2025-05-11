@@ -77,7 +77,19 @@ have the 50ms limit implemented in my LS code, versus how Performance tracks
 time, which is how I track time in my tests.
 
 THe HK implementation; however, based on the implementation I'm using, quickly
-balloons out of control.
+balloons out of control, taking absurd amounts of time. To me, this is
+expected. HK, after all, is finding the absolute most effecient path, whereas
+LS is looking for the best path fast.
+![Graph](https://github.com/user-attachments/assets/54067867-ebdd-417b-b59d-bfc32de55753)
+
+We then have the path lengths, below. LS keeps up with HK for a little bit,
+producing graphs with the same length; however, it quickly becomes apparent
+that aside from a few lucky hits, such as for the matrix size 16, HK will
+produce paths that are shorter than LS, and almost assuredly, as time goes
+on, the ineffeciency of randomly altering a portion of path will become more
+pronounced; however, when keeping the time it takes HK to generate those
+perfect paths, it may not be worth it pragmatically.
+![Graph Distance](https://github.com/user-attachments/assets/3ff27b82-facf-4a63-9b9c-3ea60b762604)
 
 ## Sources
 
@@ -99,5 +111,9 @@ I used the Performance API as opposed to Date to get precise timing for my
 metrics, and use the following docs to help with that:
 
 https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/High_precision_timing
+
+## Plagiarism Notice
+
+I certify that I have listed all sources used to complete this exercise, including the use of any Large Language Models. All of the work is my own, except where stated otherwise. I am aware that plagiarism carries severe penalties and that if plagiarism is suspected, charges may be filed against me without prior notice.
 
 
